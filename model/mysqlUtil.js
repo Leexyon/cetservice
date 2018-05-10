@@ -1,74 +1,78 @@
-const mysql = require('mysql');
-const config = require('../config/config.local.js');
+const mysql  = require('mysql');  
 
-var connectionPool = mysql.createPool({
-    'host' : config.database.host,
-    'port':config.database.port,
-    'user' : config.database.user,
-    'password' : config.database.password,
-    'database' : config.database.database,
-    'charset': config.database.charset,
-    'connectionLimit': config.database.connectionLimit,
-    'supportBigNumbers': true,
-    'bigNumberStrings': true
-});
+const mysqlConfig  = require('../config/config.local.js');  
+var connection = mysql.createConnection({     
+  host     : mysqlConfig.host,       
+  user     : mysqlConfig.user,              
+  password : mysqlConfig.password,       
+  port: mysqlConfig.port,                   
+  database: mysqlConfig.database, 
+}); 
+ 
+connection.connect();
 
-var release = connection => {
-    connection.end(function(error) {
-        if(error) {
-            console.log('Connection closed failed.');
-        } else {
-            console.log('Connection closed succeeded.');
+// 查找
+let querySql = function( sql, values ) {
+  return new Promise(( resolve, reject ) => {
+    connection.query(sql,function (err, result) {
+        if(err){
+            console.log('[quert ERROR] - ',err.message);
+            reject( err )
+            return;
         }
+       console.log(result);
+       resolve( result )
     });
-};
-
-var execQuery = sqlOptions => {
-    var results = new Promise((resolve, reject) => {
-            connectionPool.getConnection((error,connection) => {
-            if(error) {
-                console.log("Get connection from mysql pool failed !");
-                throw error;
-            }
-
-            var sql = sqlOptions['sql'];
-            var args = sqlOptions['args'];
-
-            if(!args) {
-                var query = connection.query(sql, (error, results) => {
-                    if(error) {
-                        console.log('Execute query error !');
-                        throw error;
-                    }
-
-                    resolve(results);
-                });
-            } else {
-                var query = connection.query(sql, args, function(error, results) {
-                    if(error) {
-                        console.log('Execute query error !');
-                        throw error;
-                    }
-
-                    resolve(results);
-                });
-            }
-
-            connection.release(function(error) {
-                if(error) {
-                    console.log('Mysql connection close failed !');
-                    throw error;
-                }
-            });
-        });
-    }).then(function (chunk) {
-        return chunk;
+  })
+}
+// 插入
+let addSql = function( addSql , addSqlParams , values ) {
+  return new Promise(( resolve, reject ) => {
+    connection.query(addSql , addSqlParams ,function (err, result) {
+        if(err){
+            console.log('[addspl ERROR] - ',err.message);
+            reject( err )
+            return;
+        }
+       console.log(result);
+       resolve( result )
     });
+  })
+}
+// 更新
+let updataSql = function( sql, values ) {
+  return new Promise(( resolve, reject ) => {
+    connection.query(sql,function (err, result) {
+        if(err){
+            console.log('[SELECT ERROR] - ',err.message);
+            reject( err )
+            return;
+        }
+       console.log(result);
+       resolve( result )
+    });
+  })
+}
+// 删除
+let deleteSql = function( sql, values ) {
+  return new Promise(( resolve, reject ) => {
+    connection.query(sql,function (err, result) {
+        if(err){
+            console.log('[SELECT ERROR] - ',err.message);
+            reject( err )
+            return;
+        }
+       console.log(result);
+       resolve( result )
+    });
+  })
+}
 
-    return results;
-};
+
 
 module.exports = {
-    release : release,
-    execQuery : execQuery
+    querySql,
+    addSql,
+    updataSql,
+    deleteSql
 }
