@@ -15,9 +15,9 @@ userDoa.findClientUserList = (params) => {
 
 
 userDoa.addClientUser = (params) => {
-	let _addSql =  'INSERT INTO student(headUrl,nick,password,phone) VALUES(?,?,?,?,?)'
+	let _addSql =  'INSERT INTO student(headUrl,nick,password,phone) VALUES(?,?,?,?)'
 	let _addSqlParams =   [params.headUrl,params.nick,params.password,params.phone]
-	mysqlUtils.addSql(_addSql,_addSqlParams )
+	return mysqlUtils.addSql(_addSql,_addSqlParams )
 }
 
 

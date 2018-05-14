@@ -15,16 +15,26 @@ router.post('/registor', async (ctx, next) => {
         //处理结束后返回给用户端
       
     })
+    let paramsUser = {
+        headUrl:'http://123',
+        nick:'厨神小子',
+        password:'123456789...',
+        phone:'17695733912'
+    }
+
     //异步从doa文件中加载数据
-    await userDoa.addClientUser("")
+    await userDoa.addClientUser(paramsUser)
     .then( res =>{
+        console.log(res.protocol41);
+        if (res.protocol41) {
+            ctx.body = resJson({code:"succese",body:{msg:"注册成功"}})
+        }
         //userService处理数据   同步
-        
+        //
         //处理结束后返回给用户端
       
     })
-    console.log(222);
-    
+  
 	
 })
 
