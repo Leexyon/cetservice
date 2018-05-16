@@ -30,6 +30,14 @@ commonDoa.deleteBanner = (params) => {
 	return mysqlUtils.deleteSql(_delSql )
 }
 
-
+/*
+*修改banner
+*/ 
+commonDoa.changeBanner = (params) => {
+	
+	let _changeSql =  'UPDATE banner SET title = ?,bannerUrl = ?,bannerLink = ? WHERE Id = ?'
+	let _changeSqlParams =   [params.title,params.bannerUrl,params.bannerLink,params.id]
+	return mysqlUtils.updataSql(_changeSql,_changeSqlParams )
+}
 // 暴露对象ｕｓｅｒＤｏａ
 module.exports = commonDoa

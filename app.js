@@ -3,10 +3,11 @@ const app = new Koa()
 const views = require('koa-views')
 const json = require('koa-json')
 const onerror = require('koa-onerror')
-const bodyparser = require('koa-bodyparser')
+// const bodyparser = require('koa-bodyparser')
 const koaBody  = require('koa-body')
 const logger = require('koa-logger')
 
+//路由
 const index = require('./routes/index')
 const users = require('./routes/users')
 const course = require('./routes/course')
@@ -14,8 +15,6 @@ const operation = require('./routes/operation')
 // error handler
 onerror(app)
 
-// middlewares
-app.use(bodyparser())
 app.use(koaBody({
     multipart: true,
     formidable: {
@@ -36,8 +35,6 @@ app.use(async (ctx, next) => {
   const ms = new Date() - start
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
-
-
 
 // routes
 app.use(index.routes(), index.allowedMethods())

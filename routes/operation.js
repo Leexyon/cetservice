@@ -10,7 +10,7 @@ router.get('/', function (ctx, next) {
   ctx.body = 'this is a operation response!'
 });
 
-
+//获取bannerlist
 router.get('/getBannerList', async (ctx, next) => {
 	let params = ctx.request.body;
 	await operationDoa.findBannerList()
@@ -19,10 +19,9 @@ router.get('/getBannerList', async (ctx, next) => {
 	})
 	
 });
-
-router.get('/deleteBanner', async (ctx, next) => {
+//删除bannerlist
+router.post('/deleteBanner', async (ctx, next) => {
 	let params = ctx.request.body;
-	console.log(ctx);
 	console.log(params);
 	await operationDoa.deleteBanner(params)
 	.then( (res)=>{
@@ -30,27 +29,46 @@ router.get('/deleteBanner', async (ctx, next) => {
 	})
 	
 });
-
-
-router.post('/addBannerList', async (ctx, next) => {
-	
-    let params = {};
+//修改bannerlist
+router.post('/changeBanner', async (ctx, next) => {
+	let params = {};
     const file = ctx.request.body.files.bannerUrl;
 	let fields = ctx.request.body.fields;
 	//保存到本地
 	let fileName =  operationService.saveFile(file)
+	params.id = fields.id;
 	params.title = fields.title;
 	params.bannerLink = fields.bannerLink;
 	params.bannerUrl = fileName;
 
 
 	// 插入
+	await operationDoa.changeBanner(params)
+	.then(res =>{
+	    ctx.body = resJson({code:"succese",body:params})
+	})
+	
+});
+//添加bannerlist
+router.post('/addBannerList', async (ctx, next) => {
+	
+    let params = {};
+    const file = ctx.request.body.files.bannerUrl;
+	let fields = ctx.request.body.fields;
+	//保存到本地
+	//事务处理同步
+	let fileName =  operationService.saveFile(file)
+	params.title = fields.title;
+	params.bannerLink = fields.bannerLink;
+	params.bannerUrl = fileName;
+	// 插入
 	await operationDoa.addBanner(params)
 	.then(res =>{
 	    ctx.body = resJson({code:"succese",body:params})
 	})
-
 });
+
+
 
 
 module.exports = router

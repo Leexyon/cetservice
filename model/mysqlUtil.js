@@ -40,9 +40,9 @@ let addSql = function( addSql , addSqlParams , values ) {
   })
 }
 // 更新
-let updataSql = function( sql, values ) {
+let updataSql = function( sql,modSqlParams, values ) {
   return new Promise(( resolve, reject ) => {
-    connection.query(sql,function (err, result) {
+    connection.query(sql,modSqlParams,function (err, result) {
         if(err){
             console.log('[SELECT ERROR] - ',err.message);
             reject( err )
