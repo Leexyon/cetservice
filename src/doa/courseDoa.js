@@ -7,8 +7,8 @@ let commonDoa = {}
 /*
 * 获取推荐
 */
-commonDoa.findCourse = () => {
-	let _sql = `SELECT * FROM course`
+commonDoa.findCourse = (params) => {
+	let _sql = `SELECT * FROM course WHERE members = ${params.members} limit ${params.page},5 `
   	return mysqlUtils.querySql( _sql)
 }
 /*

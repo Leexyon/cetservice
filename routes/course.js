@@ -11,7 +11,7 @@ router.get('/', function (ctx, next) {
 
 router.post('/getCourseList' , async (ctx, next) => {
 	let params = ctx.request.body;
-	await courseDoa.findCourse()
+	await courseDoa.findCourse({page:(params.page-1)*5,members:Number(params.members)})
 	.then((res) => {
 		ctx.body = resJson({code:"succese",body:res})
 	})
