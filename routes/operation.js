@@ -104,6 +104,69 @@ router.post('/changeDuanziList', async (ctx, next) => {
 	})
 });
 
+/*
+推荐
+*/
+//获取bannerlist
+router.post('/findReference', async (ctx, next) => {
+	let params = ctx.request.body;
+	await operationDoa.findReference()
+	.then( (res)=>{
+		ctx.body = resJson({code:"succese",body:res})
+	})
+	
+});
+//删除bannerlist
+router.post('/deleteReference', async (ctx, next) => {
+	let params = ctx.request.body;
+	console.log(params);
+	await operationDoa.deleteReference(params)
+	.then( (res)=>{
+		ctx.body = resJson({code:"succese",body:res})
+	})
+	
+});
+//修改bannerlist
+router.post('/changeReference', async (ctx, next) => {
+	let params = {};
+	console.log( ctx.request.body);
+    const file = ctx.request.body.files.courseUrl;
+	let fields = ctx.request.body.fields;
+	//保存到本地
+	let fileName =  operationService.saveFile(file)
+	params.title = fields.title;
+	params.courseLink = fields.courseLink;
+	params.courseUrl = fileName;
+	params.courseId = fields.courseId;
+	params.members = fields.members;
+	params.id = fields.id
+	// 插入
+	await operationDoa.changeReference(params)
+	.then(res =>{
+	    ctx.body = resJson({code:"succese",body:res})
+	})
+	
+});
+//添加bannerlist
+router.post('/addReference', async (ctx, next) => {
+	
+    let params = {};
+    const file = ctx.request.body.files.courseUrl;
+	let fields = ctx.request.body.fields;
+	//保存到本地
+	//事务处理同步
+	let fileName =  operationService.saveFile(file)
+	params.title = fields.title;
+	params.courseLink = fields.courseLink;
+	params.courseUrl = fileName;
+	params.courseId = fields.courseId;
+	params.members = fields.members;
+	// 插入
+	await operationDoa.addReference(params)
+	.then(res =>{
+	    ctx.body = resJson({code:"succese",body:params})
+	})
+});
 
 module.exports = router
 

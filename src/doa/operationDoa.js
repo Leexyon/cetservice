@@ -63,5 +63,40 @@ commonDoa.changeDuanzi = (params) => {
 	return mysqlUtils.updataSql(_delSql,_changeSqlParams)
 }
 
+/*
+* 获取推荐
+*/
+commonDoa.findReference = () => {
+	let _sql = `SELECT * FROM reference`
+  	return mysqlUtils.querySql( _sql)
+}
+/*
+*添加推荐
+*/ 
+commonDoa.addReference = (params) => {
+	let _addSql =  'INSERT INTO reference(title,courseUrl,courseLink,courseId,members) VALUES(?,?,?,?,?)'
+	let _addSqlParams =   [params.title,params.courseUrl,params.courseLink,params.courseId,params.members]
+	return mysqlUtils.addSql(_addSql,_addSqlParams )
+}
+/*
+*删除推荐
+*/ 
+commonDoa.deleteReference = (params) => {
+	var idDet = params.id
+	let _delSql =  'DELETE FROM reference where id='+idDet
+	return mysqlUtils.deleteSql(_delSql )
+}
+
+/*
+*修改推荐
+*/ 
+commonDoa.changeReference = (params) => {
+	
+	let _changeSql =  'UPDATE reference SET title = ?,courseUrl = ?,courseLink = ?,courseId = ?,members = ? WHERE Id = ?'
+	let _changeSqlParams =   [params.title,params.courseUrl,params.courseLink,params.courseId,params.members,params.id]
+	return mysqlUtils.updataSql(_changeSql,_changeSqlParams )
+}
+
+
 // 暴露对象ｕｓｅｒＤｏａ
 module.exports = commonDoa
