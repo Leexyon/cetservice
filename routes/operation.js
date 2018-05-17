@@ -67,8 +67,42 @@ router.post('/addBannerList', async (ctx, next) => {
 	    ctx.body = resJson({code:"succese",body:params})
 	})
 });
+/* 
+*段子
+*/
+router.post('/addDuanziList', async (ctx, next) => {
+	let params = ctx.request.body
+	console.log(params)
+	// 插入
+	await operationDoa.addDuanzi(params)
+	.then(res =>{
+	    ctx.body = resJson({code:"succese",body:params})
+	})
+});
+router.post('/getDuanziList', async (ctx, next) => {
+	// 插入
+	await operationDoa.getDuanzi()
+	.then(res =>{
+	    ctx.body = resJson({code:"succese",body:res})
+	})
+});
+router.post('/deleteDuanziList', async (ctx, next) => {
+	let params = ctx.request.body
+	// 插入
+	await operationDoa.deleteDuanzi(params)
+	.then(res =>{
+	    ctx.body = resJson({code:"succese",body:res})
+	})
+});
 
-
+router.post('/changeDuanziList', async (ctx, next) => {
+	let params = ctx.request.body
+	// 插入
+	await operationDoa.changeDuanzi(params)
+	.then(res =>{
+	    ctx.body = resJson({code:"succese",body:res})
+	})
+});
 
 
 module.exports = router
